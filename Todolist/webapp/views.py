@@ -16,6 +16,8 @@ def create_task(request):
         description = request.POST.get("description")
         status = request.POST.get("status")
         done_at = request.POST.get("done_at")
+        if done_at == "":
+            done_at = None
         new_task = Task.objects.create(description=description, status=status, done_at=done_at)
         context = {"task": new_task}
         return render(request, "index.html", context)

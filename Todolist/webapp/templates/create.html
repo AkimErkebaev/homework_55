@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>Create Task</h1>
-<form action="/tasks/add" method="post">
+<form action="/tasks/add/" method="post">
     {% csrf_token %}
     <label>Status:</label><br>
     <select name="status">
@@ -19,10 +19,12 @@
             <option value="{{ status.0 }}">{{ status.1 }}</option>
             {{ status }}
         {% endfor %}
-    </select>
+    </select><br><br>
     <label>Description:</label><br>
-    <textarea name="description"></textarea><br>
-    <label></label>
+    <textarea name="description"></textarea><br><br>
+    <label>Date at:</label><br>
+    <input type="text" name="done_at"><br><br>
+    <input type="submit" value="Send"><br>
 
 
 </form>
