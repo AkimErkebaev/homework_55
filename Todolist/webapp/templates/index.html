@@ -1,21 +1,15 @@
+{% extends "base.html" %}
 {% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static "css/style.css" %}">
-</head>
-<body>
-<a href="tasks/add/">Создание задания</a>
-<h1>Статьи</h1>
-{% for task in tasks %}
-    <h3>{{ task.name }}</h3>
-    <h3>{{ task.done_at }}</h3>
-    <p><a href="{% url "task_view" article.pk %}">Подробнее</a></p>
-{% endfor %}
-</body>
-</html>
+{% block nav %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "task" %}">Создание задания</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <h1>Статьи</h1>
+    {% for task in tasks %}
+        <h3>{{ task.name }}</h3>
+        <h3>{{ task.done_at }}</h3>
+        <p><a href="{% url "task_view" task.pk %}">Подробнее</a></p>
+    {% endfor %}
+{% endblock %}

@@ -14,13 +14,16 @@
 {% block content %}
 
     <p>
-        {{ article.title }}
+        {{ task.name }}
     </p>
     <p>
-        {{ article.author }}
+        {{ task.status }}
     </p>
     <p>
-        {{ article.content }}
+        {{ task.description }}
+    </p>
+    <p>
+        {{ task.done_at }}
     </p>
     <a href="{% url "index" %}">На главную</a>
 {% endblock %}
