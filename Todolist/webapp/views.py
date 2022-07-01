@@ -22,8 +22,9 @@ def create_task(request):
         if done_at == "":
             done_at = None
         new_task = Task.objects.create(description=description, status=status, done_at=done_at, name=name)
-        context = {"task": new_task}
-        return render(request, "index.html", context)
+        # context = {"task": new_task}
+        return redirect("task_view", pk=new_task.pk)
+        # return render(request, "index.html", context)
 
 
 def task_view(request, **kwargs):
