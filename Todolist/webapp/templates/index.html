@@ -14,9 +14,8 @@
 <h1>Статьи</h1>
 {% for task in tasks %}
     <h3>{{ task.name }}</h3>
-    <h3>{{ task.description }}</h3>
     <h3>{{ task.done_at }}</h3>
-    <h3>{{ task.status }} - {{ task.get_status_display }}</h3>
+    <p><a href="{% url "task_view" article.pk %}">Подробнее</a></p>
 {% endfor %}
 </body>
 </html>
