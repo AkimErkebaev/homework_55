@@ -1,26 +1,6 @@
 [
 {
     "model": "webapp.task",
-    "pk": 2,
-    "fields": {
-        "description": "haha",
-        "status": "in_progress",
-        "done_at": "2022-06-28",
-        "name": "NoName"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 3,
-    "fields": {
-        "description": "reawrwe",
-        "status": "new",
-        "done_at": "2022-06-28",
-        "name": "NoName"
-    }
-},
-{
-    "model": "webapp.task",
     "pk": 4,
     "fields": {
         "description": "t543q",
@@ -121,26 +101,6 @@
 },
 {
     "model": "webapp.task",
-    "pk": 14,
-    "fields": {
-        "description": "dsafads",
-        "status": "in_progress",
-        "done_at": "2222-12-12",
-        "name": "gdsaf"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 15,
-    "fields": {
-        "description": "ras",
-        "status": "new",
-        "done_at": "2022-06-28",
-        "name": "rewa"
-    }
-},
-{
-    "model": "webapp.task",
     "pk": 16,
     "fields": {
         "description": "fdafasdfdas",
@@ -187,6 +147,26 @@
         "status": "in_progress",
         "done_at": "2019-05-02",
         "name": "rars"
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 21,
+    "fields": {
+        "description": "zcxvxzcvx",
+        "status": "in_progress",
+        "done_at": "2022-06-11",
+        "name": "vavczxvzx"
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 22,
+    "fields": {
+        "description": "rewqrqwer",
+        "status": "in_progress",
+        "done_at": "2019-05-02",
+        "name": "rewqrwqerqw"
     }
 }
 ]
