@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block nav %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url "create_task" %}">Создание задания</a>
+        <a class="nav-link" href="{% url "create_task" %}">Создание статьи</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Редактировать</a>
+        <a class="nav-link" href="{% url "update_task" task.pk %}">Редактировать</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Удалить</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskDeleteModal">
+            Удалить
+        </button>
     </li>
 {% endblock %}
 
@@ -26,4 +28,25 @@
         {{ task.done_at }}
     </p>
     <a href="{% url "index" %}">На главную</a>
+    <div class="modal fade" id="taskDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskDeleteModal">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены что хотите удалить статью {{ task.name }}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form action="{% url "delete_task" task.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Да</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

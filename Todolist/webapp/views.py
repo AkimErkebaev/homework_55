@@ -59,11 +59,11 @@ def update_task(request, pk):
         return render(request, "update.html", {"form": form})
 
 
-def delete_article(request, pk):
-    article = get_object_or_404(Article, pk=pk)
+def delete_task(request, pk):
+    task = get_object_or_404(Task, pk=pk)
     if request.method == "GET":
         pass
     #     return render(request, "delete.html", {"article": article})
     else:
-        article.delete()
+        task.delete()
         return redirect("index")
