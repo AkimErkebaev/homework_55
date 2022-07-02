@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.urls import reverse
 # Create your views here.
+from webapp.forms import TaskForm
 from webapp.models import Task, status_choices
 
 
@@ -36,3 +37,33 @@ def task_view(request, **kwargs):
     # except Article.DoesNotExist:
     #     # return HttpResponseNotFound("Страница не найдена")
     #     raise Http404
+
+
+def update_task(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    if request.method == "GET":
+        form = TaskForm(initial={
+            "status": task.status,
+            "name": task.name,
+            "description": task.description
+        })
+        return render(request, "update.html", {"form": form})
+    else:
+        form = TaskForm(data=request.POST)
+        if form.is_valid():
+            task.status = form.cleaned_data.get("status")
+            task.author = form.cleaned_data.get("author")
+            task.description = form.cleaned_data.get("description")
+            task.save()
+            return redirect("task_view", pk=task.pk)
+        return render(request, "update.html", {"form": form})
+
+
+def delete_article(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    if request.method == "GET":
+        pass
+    #     return render(request, "delete.html", {"article": article})
+    else:
+        article.delete()
+        return redirect("index")
