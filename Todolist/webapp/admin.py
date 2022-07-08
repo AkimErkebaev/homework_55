@@ -5,11 +5,11 @@ from webapp.models import Task
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ['id', 'description', 'status', 'done_at', 'name']
+    list_display = ['id', 'name', 'description', 'status', 'type', 'created_at', 'updated_at']
     list_display_links = ['name']
-    list_filter = ['done_at']
-    search_fields = ['done_at']
-    fields = ['description', 'status', 'done_at', 'name']
+    list_filter = ['created_at']
+    search_fields = ['created_at']
+    fields = ['name', 'description', 'status', 'type']
     readonly_fields = []
 
 

@@ -2,20 +2,47 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.urls import reverse
 # Create your views here.
+from django.views import View
+from django.views.generic import TemplateView
+
 from webapp.forms import TaskForm
-from webapp.models import Task, status_choices
+from webapp.models import Task
 
 
-def index_view(request):
-    tasks = Task.objects.order_by("-done_at")
-    context = {"tasks": tasks}
-    return render(request, "index.html", context)
+class IndexView(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        tasks = Task.objects.order_by("-updated_at")
+        kwargs["tasks"] = tasks
+        return super().get_context_data(**kwargs)
 
 
-def create_task(request):
-    if request.method == "GET":
-        return render(request, "create.html", {"statuses": status_choices})
-    else:
+class TaskView(TemplateView):
+    template_name = "task_view.html"
+
+    # extra_context = {"test": "test"}
+    # def get_template_names(self):
+    #     return "article_view.html"
+
+    def get_context_data(self, **kwargs):
+        pk = kwargs.get("pk")
+        task = get_object_or_404(Task, pk=pk)
+        kwargs["task"] = task
+        return super().get_context_data(**kwargs)
+
+
+class CreateTask(View):
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        self.task = get_object_or_404(Task, pk=pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.method == "GET":
+            return render(request, "create.html")
+
+    def post(self, request, *args, **kwargs):
         name = request.POST.get("name")
         description = request.POST.get("description")
         status = request.POST.get("status")
@@ -25,45 +52,90 @@ def create_task(request):
         new_task = Task.objects.create(description=description, status=status, done_at=done_at, name=name)
         # context = {"task": new_task}
         return redirect("task_view", pk=new_task.pk)
-        # return render(request, "index.html", context)
+
+    # def create_task(request):
+    #     if request.method == "GET":
+    #         return render(request, "create.html", {"statuses": status_choices})
+    #     else:
+    #         name = request.POST.get("name")
+    #         description = request.POST.get("description")
+    #         status = request.POST.get("status")
+    #         done_at = request.POST.get("done_at")
+    #         if done_at == "":
+    #             done_at = None
+    #         new_task = Task.objects.create(description=description, status=status, done_at=done_at, name=name)
+    #         # context = {"task": new_task}
+    #         return redirect("task_view", pk=new_task.pk)
+    #         # return render(request, "index.html", context)
 
 
-def task_view(request, **kwargs):
-    pk = kwargs.get("pk")
-    task = get_object_or_404(Task, pk=pk)
-    return render(request, "task_view.html", {"task": task})
-    # try:
-    #     article = Article.objects.get(pk=pk)
-    # except Article.DoesNotExist:
-    #     # return HttpResponseNotFound("Страница не найдена")
-    #     raise Http404
+class UpdateTask(View):
 
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        self.task = get_object_or_404(Task, pk=pk)
+        return super().dispatch(request, *args, **kwargs)
 
-def update_task(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    if request.method == "GET":
-        form = TaskForm(initial={
-            "status": task.status,
-            "name": task.name,
-            "description": task.description
-        })
-        return render(request, "update.html", {"form": form})
-    else:
+    def get(self, request, *args, **kwargs):
+        if request.method == "GET":
+            form = TaskForm(initial={
+                "status": self.task.status,
+                "name": self.task.name,
+                "description": self.task.description
+            })
+            return render(request, "update.html", {"form": form})
+
+    def post(self, request, *args, **kwargs):
         form = TaskForm(data=request.POST)
         if form.is_valid():
-            task.status = form.cleaned_data.get("status")
-            task.author = form.cleaned_data.get("author")
-            task.description = form.cleaned_data.get("description")
-            task.save()
-            return redirect("task_view", pk=task.pk)
+            self.task.name = form.cleaned_data.get("name")
+            self.task.description = form.cleaned_data.get("description")
+            self.task.status = form.cleaned_data.get("status")
+            self.task.type = form.cleaned_data.get("type")
+            self.task.save()
+            return redirect("task_view", pk=self.task.pk)
         return render(request, "update.html", {"form": form})
 
+    # def update_task(request, pk):
+    #     task = get_object_or_404(Task, pk=pk)
+    #     if request.method == "GET":
+    #         form = TaskForm(initial={
+    #             "status": task.status,
+    #             "name": task.name,
+    #             "description": task.description
+    #         })
+    #         return render(request, "update.html", {"form": form})
+    #     else:
+    #         form = TaskForm(data=request.POST)
+    #         if form.is_valid():
+    #             task.status = form.cleaned_data.get("status")
+    #             task.author = form.cleaned_data.get("author")
+    #             task.description = form.cleaned_data.get("description")
+    #             task.save()
+    #             return redirect("task_view", pk=task.pk)
+    #         return render(request, "update.html", {"form": form})
 
-def delete_task(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    if request.method == "GET":
-        pass
-    #     return render(request, "delete.html", {"article": article})
-    else:
-        task.delete()
+
+class DeleteTask(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        self.task = get_object_or_404(Task, pk=pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.method == "GET":
+            pass
+
+    def post(self, request, *args, **kwargs):
+        self.task.delete()
         return redirect("index")
+
+    # def delete_task(request, pk):
+    #     task = get_object_or_404(Task, pk=pk)
+    #     if request.method == "GET":
+    #         pass
+    #     #     return render(request, "delete.html", {"article": article})
+    #     else:
+    #         task.delete()
+    #         return redirect("index")
