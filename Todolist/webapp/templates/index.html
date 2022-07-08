@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>{{ task.name }}</h3>
-                        <h3>{{ task.done_at }}</h3>
+                        <h3>{{ task.status }}</h3>
                         <h5 class="card-title">{{ article.title }}</h5>
                         <a href="{% url "task_view" task.pk %}" class="card-link">Подробнее</a>
                     </div>

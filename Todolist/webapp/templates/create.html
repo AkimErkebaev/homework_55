@@ -1,23 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Создание статьи{% endblock %}
+{% block title %}Создание задания{% endblock %}
+
 {% block content %}
     <h1>Create Task</h1>
     <form action="" method="post">
-        <label>Name:</label><br>
-        <textarea name="name"></textarea><br><br>
-        {% csrf_token %}
-        <label>Status:</label><br>
-        <select name="status">
-            {% for status in statuses %}
-                <option value="{{ status.0 }}">{{ status.1 }}</option>
-                {{ status }}
-            {% endfor %}
-        </select><br><br>
-        <label>Description:</label><br>
-        <textarea name="description"></textarea><br><br>
-        <label>Date at:</label><br>
-        <input type="text" name="done_at"><br><br>
-        <input type="submit" value="Send"><br>
+        {% include "partial/form.html" with button_text="Создать" %}
     </form>
     <a href="{% url "index" %}">На главную</a>
 {% endblock %}

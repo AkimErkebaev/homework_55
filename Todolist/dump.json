@@ -1,172 +1,128 @@
 [
 {
     "model": "webapp.task",
+    "pk": 2,
+    "fields": {
+        "created_at": "2022-07-08T09:13:04.909Z",
+        "updated_at": "2022-07-08T09:42:33.734Z",
+        "name": "fdasfa",
+        "description": "ewfds",
+        "status": 2,
+        "type": 2
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 3,
+    "fields": {
+        "created_at": "2022-07-08T09:13:13.177Z",
+        "updated_at": "2022-07-08T09:43:01.685Z",
+        "name": "fdasfsd11111",
+        "description": "fdasfasdfdasfasdf",
+        "status": 1,
+        "type": 3
+    }
+},
+{
+    "model": "webapp.task",
     "pk": 4,
     "fields": {
-        "description": "t543q",
-        "status": "new",
-        "done_at": "2022-06-22",
-        "name": "NoName"
+        "created_at": "2022-07-08T09:39:03.632Z",
+        "updated_at": "2022-07-08T09:39:03.632Z",
+        "name": "NoNameафвыа",
+        "description": "авыфафвыаавфы",
+        "status": 3,
+        "type": 2
     }
 },
 {
     "model": "webapp.task",
     "pk": 5,
     "fields": {
-        "description": "t543q",
-        "status": "new",
-        "done_at": "2022-06-22",
-        "name": "NoName"
+        "created_at": "2022-07-08T09:39:20.224Z",
+        "updated_at": "2022-07-08T09:39:20.224Z",
+        "name": "авывафываыа",
+        "description": "авыфавыфа",
+        "status": 1,
+        "type": 2
     }
 },
 {
     "model": "webapp.task",
     "pk": 6,
     "fields": {
-        "description": "t543q",
-        "status": "new",
-        "done_at": "2022-06-22",
-        "name": "NoName"
+        "created_at": "2022-07-08T09:41:49.468Z",
+        "updated_at": "2022-07-08T09:41:49.468Z",
+        "name": "bczvzxcvzxcv",
+        "description": "bvcvbzvxcv",
+        "status": 2,
+        "type": 3
     }
 },
 {
     "model": "webapp.task",
     "pk": 7,
     "fields": {
-        "description": "reawr",
-        "status": "done",
-        "done_at": "2022-06-22",
-        "name": "NoName"
+        "created_at": "2022-07-08T09:49:53.885Z",
+        "updated_at": "2022-07-08T09:49:53.885Z",
+        "name": "fdsf",
+        "description": "afsfdsaf",
+        "status": 1,
+        "type": 2
     }
 },
 {
     "model": "webapp.task",
     "pk": 8,
     "fields": {
-        "description": "tadsas",
-        "status": "new",
-        "done_at": "2022-06-22",
-        "name": "NoName"
+        "created_at": "2022-07-08T09:58:51.047Z",
+        "updated_at": "2022-07-08T09:58:51.047Z",
+        "name": "NoNamegdsafasf",
+        "description": "fdasfasd",
+        "status": 2,
+        "type": 2
     }
 },
 {
-    "model": "webapp.task",
-    "pk": 9,
+    "model": "webapp.status",
+    "pk": 1,
     "fields": {
-        "description": "fdasfs",
-        "status": "new",
-        "done_at": "2022-06-22",
-        "name": "NoName"
+        "name": "New"
     }
 },
 {
-    "model": "webapp.task",
-    "pk": 10,
+    "model": "webapp.status",
+    "pk": 2,
     "fields": {
-        "description": "reawrdsafdsagdasgsdaf",
-        "status": "done",
-        "done_at": "2022-06-11",
-        "name": "NoName"
+        "name": "In Progress"
     }
 },
 {
-    "model": "webapp.task",
-    "pk": 11,
+    "model": "webapp.status",
+    "pk": 3,
     "fields": {
-        "description": "rewr",
-        "status": "new",
-        "done_at": "2015-12-11",
-        "name": "NoName"
+        "name": "Done"
     }
 },
 {
-    "model": "webapp.task",
-    "pk": 12,
+    "model": "webapp.type",
+    "pk": 1,
     "fields": {
-        "description": "reafds",
-        "status": "new",
-        "done_at": null,
-        "name": "NoName"
+        "name": "Task"
     }
 },
 {
-    "model": "webapp.task",
-    "pk": 13,
+    "model": "webapp.type",
+    "pk": 2,
     "fields": {
-        "description": "gnvn",
-        "status": "new",
-        "done_at": null,
-        "name": "NoName"
+        "name": "Bug"
     }
 },
 {
-    "model": "webapp.task",
-    "pk": 16,
+    "model": "webapp.type",
+    "pk": 3,
     "fields": {
-        "description": "fdafasdfdas",
-        "status": "new",
-        "done_at": "2022-06-11",
-        "name": "eraweraw"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 17,
-    "fields": {
-        "description": "sssssssss",
-        "status": "done",
-        "done_at": "2019-05-02",
-        "name": "sssssss"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 18,
-    "fields": {
-        "description": "fdas",
-        "status": "in_progress",
-        "done_at": null,
-        "name": "fdas"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 19,
-    "fields": {
-        "description": "fdas",
-        "status": "in_progress",
-        "done_at": "2022-06-28",
-        "name": "fdas"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 20,
-    "fields": {
-        "description": "fdasfs",
-        "status": "in_progress",
-        "done_at": "2019-05-02",
-        "name": "rars"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 21,
-    "fields": {
-        "description": "zcxvxzcvx",
-        "status": "in_progress",
-        "done_at": "2022-06-11",
-        "name": "vavczxvzx"
-    }
-},
-{
-    "model": "webapp.task",
-    "pk": 22,
-    "fields": {
-        "description": "rewqrqwer",
-        "status": "in_progress",
-        "done_at": "2019-05-02",
-        "name": "rewqrwqerqw"
+        "name": "Enhancement"
     }
 }
 ]

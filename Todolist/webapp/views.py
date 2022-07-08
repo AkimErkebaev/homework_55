@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from webapp.forms import TaskForm
-from webapp.models import Task
+from webapp.models import Task, Status, Type
 
 
 class IndexView(TemplateView):
@@ -33,40 +33,26 @@ class TaskView(TemplateView):
 
 
 class CreateTask(View):
-    def dispatch(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        self.task = get_object_or_404(Task, pk=pk)
-        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         if request.method == "GET":
-            return render(request, "create.html")
+            form = TaskForm()
+            return render(request, "create.html", {"form": form})
 
     def post(self, request, *args, **kwargs):
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        status = request.POST.get("status")
-        done_at = request.POST.get("done_at")
-        if done_at == "":
-            done_at = None
-        new_task = Task.objects.create(description=description, status=status, done_at=done_at, name=name)
+        form = TaskForm(data=request.POST)
+        if form.is_valid():
+            name = request.POST.get("name")
+            description = request.POST.get("description")
+            status = request.POST.get("status")
+            status = Status.objects.get(id=status)
+            type = request.POST.get("type")
+            type = Type.objects.get(id=type)
+            new_task = Task.objects.create(description=description, status=status, type=type,
+                                           name=name)
+            return redirect("task_view", pk=new_task.pk)
+        return render(request, "create.html", {"form": form})
         # context = {"task": new_task}
-        return redirect("task_view", pk=new_task.pk)
-
-    # def create_task(request):
-    #     if request.method == "GET":
-    #         return render(request, "create.html", {"statuses": status_choices})
-    #     else:
-    #         name = request.POST.get("name")
-    #         description = request.POST.get("description")
-    #         status = request.POST.get("status")
-    #         done_at = request.POST.get("done_at")
-    #         if done_at == "":
-    #             done_at = None
-    #         new_task = Task.objects.create(description=description, status=status, done_at=done_at, name=name)
-    #         # context = {"task": new_task}
-    #         return redirect("task_view", pk=new_task.pk)
-    #         # return render(request, "index.html", context)
 
 
 class UpdateTask(View):
@@ -81,7 +67,8 @@ class UpdateTask(View):
             form = TaskForm(initial={
                 "status": self.task.status,
                 "name": self.task.name,
-                "description": self.task.description
+                "description": self.task.description,
+                "type": self.task.type
             })
             return render(request, "update.html", {"form": form})
 
@@ -95,25 +82,6 @@ class UpdateTask(View):
             self.task.save()
             return redirect("task_view", pk=self.task.pk)
         return render(request, "update.html", {"form": form})
-
-    # def update_task(request, pk):
-    #     task = get_object_or_404(Task, pk=pk)
-    #     if request.method == "GET":
-    #         form = TaskForm(initial={
-    #             "status": task.status,
-    #             "name": task.name,
-    #             "description": task.description
-    #         })
-    #         return render(request, "update.html", {"form": form})
-    #     else:
-    #         form = TaskForm(data=request.POST)
-    #         if form.is_valid():
-    #             task.status = form.cleaned_data.get("status")
-    #             task.author = form.cleaned_data.get("author")
-    #             task.description = form.cleaned_data.get("description")
-    #             task.save()
-    #             return redirect("task_view", pk=task.pk)
-    #         return render(request, "update.html", {"form": form})
 
 
 class DeleteTask(View):
@@ -130,12 +98,3 @@ class DeleteTask(View):
     def post(self, request, *args, **kwargs):
         self.task.delete()
         return redirect("index")
-
-    # def delete_task(request, pk):
-    #     task = get_object_or_404(Task, pk=pk)
-    #     if request.method == "GET":
-    #         pass
-    #     #     return render(request, "delete.html", {"article": article})
-    #     else:
-    #         task.delete()
-    #         return redirect("index")
