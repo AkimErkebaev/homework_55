@@ -46,10 +46,11 @@ class CreateTask(View):
             description = request.POST.get("description")
             status = request.POST.get("status")
             status = Status.objects.get(id=status)
-            type = request.POST.get("type")
-            type = Type.objects.get(id=type)
-            new_task = Task.objects.create(description=description, status=status, type=type,
+            types = request.POST.get("types")
+            # types = form.cleaned_data.pop("types")
+            new_task = Task.objects.create(description=description, status=status,
                                            name=name)
+            new_task.types.set(types)
             return redirect("task_view", pk=new_task.pk)
         return render(request, "create.html", {"form": form})
         # context = {"task": new_task}
@@ -68,7 +69,7 @@ class UpdateTask(View):
                 "status": self.task.status,
                 "name": self.task.name,
                 "description": self.task.description,
-                "type": self.task.type
+                "types": self.task.types.all()
             })
             return render(request, "update.html", {"form": form})
 
@@ -78,7 +79,7 @@ class UpdateTask(View):
             self.task.name = form.cleaned_data.get("name")
             self.task.description = form.cleaned_data.get("description")
             self.task.status = form.cleaned_data.get("status")
-            self.task.type = form.cleaned_data.get("type")
+            self.task.types.set(form.cleaned_data.pop("types"))
             self.task.save()
             return redirect("task_view", pk=self.task.pk)
         return render(request, "update.html", {"form": form})

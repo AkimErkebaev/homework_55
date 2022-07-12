@@ -15,8 +15,7 @@ class Task(BaseModel):
     description = models.TextField(max_length=3000, null=True, blank=True, verbose_name="Описание")
     status = models.ForeignKey("webapp.Status", on_delete=models.PROTECT, related_name="statuses",
                                verbose_name='Статус')
-    type = models.ForeignKey("webapp.Type", on_delete=models.PROTECT, related_name="types",
-                             verbose_name='Тип')
+    types = models.ManyToManyField("webapp.Type", related_name="tasks", blank=True)
 
     def __str__(self):
         return f"{self.id}. {self.description}: {self.status} {self.name}"
@@ -40,7 +39,7 @@ class Status(models.Model):
 
 
 class Type(models.Model):
-    name = models.TextField(max_length=400, null=False, blank=False, verbose_name='Название')
+    name = models.CharField(max_length=31, verbose_name='Тип')
 
     def __str__(self):
         return f"{self.name}"

@@ -25,14 +25,17 @@
         {{ task.status }}
     </p>
     <p>
-        {{ task.type }}
-    </p>
-    <p>
         {{ task.created_at }}
     </p>
     <p>
         {{ type.updated_at }}
     </p>
+    <h3>Типы</h3>
+    {% for type in task.types.all %}
+        <p>{{ type.name }}</p>
+    {% empty %}
+        <p>Типов нет</p>
+    {% endfor %}
     <a href="{% url "index" %}">На главную</a>
     <div class="modal fade" id="taskDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
