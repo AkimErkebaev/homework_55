@@ -11,6 +11,7 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ['created_at']
     fields = ['name', 'description', 'status', 'types']
     readonly_fields = []
+    filter_horizontal = ['types']
 
 
 admin.site.register(Task, TaskAdmin)
