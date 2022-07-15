@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.urls import reverse
 # Create your views here.
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 
 from webapp.base_view import FormView as CustomFormView
 from webapp.forms import TaskForm
@@ -48,33 +48,28 @@ class CreateTask(CustomFormView):
         return redirect("task_view", pk=self.task.pk)
 
 
-class UpdateTask(CustomFormView):
+class UpdateTask(FormView):
+    form_class = TaskForm
+    template_name = "update.html"
 
     def dispatch(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        self.task = get_object_or_404(Task, pk=pk)
+        self.task = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        if request.method == "GET":
-            form = TaskForm(initial={
-                "status": self.task.status,
-                "name": self.task.name,
-                "description": self.task.description,
-                "types": self.task.types.all()
-            })
-            return render(request, "update.html", {"form": form})
+    def get_success_url(self):
+        return reverse("task_view", kwargs={"pk": self.task.pk})
 
-    def post(self, request, *args, **kwargs):
-        form = TaskForm(data=request.POST)
-        if form.is_valid():
-            self.task.name = form.cleaned_data.get("name")
-            self.task.description = form.cleaned_data.get("description")
-            self.task.status = form.cleaned_data.get("status")
-            self.task.types.set(form.cleaned_data.pop("types"))
-            self.task.save()
-            return redirect("task_view", pk=self.task.pk)
-        return render(request, "update.html", {"form": form})
+    def get_form_kwargs(self):
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs['instance'] = self.task
+        return form_kwargs
+
+    def form_valid(self, form):
+        self.task = form.save()
+        return super().form_valid(form)
+
+    def get_object(self):
+        return get_object_or_404(Task, pk=self.kwargs.get("pk"))
 
 
 class DeleteTask(View):
