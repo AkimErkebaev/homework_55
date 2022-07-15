@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
 
+from webapp.base_view import FormView as CustomFormView
 from webapp.forms import TaskForm
 from webapp.models import Task, Status, Type
 
@@ -32,31 +33,22 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CreateTask(View):
+class CreateTask(CustomFormView):
+    form_class = TaskForm
+    template_name = "create.html"
 
-    def get(self, request, *args, **kwargs):
-        if request.method == "GET":
-            form = TaskForm()
-            return render(request, "create.html", {"form": form})
+    def form_valid(self, form):
+        # tags = form.cleaned_data.pop("tags")
+        # self.article = Article.objects.create(**form.cleaned_data)
+        # self.article.tags.set(tags)
+        self.task = form.save()
+        return super().form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        form = TaskForm(data=request.POST)
-        if form.is_valid():
-            name = request.POST.get("name")
-            description = request.POST.get("description")
-            status = request.POST.get("status")
-            status = Status.objects.get(id=status)
-            types = request.POST.get("types")
-            # types = form.cleaned_data.pop("types")
-            new_task = Task.objects.create(description=description, status=status,
-                                           name=name)
-            new_task.types.set(types)
-            return redirect("task_view", pk=new_task.pk)
-        return render(request, "create.html", {"form": form})
-        # context = {"task": new_task}
+    def get_redirect_url(self):
+        return redirect("task_view", pk=self.task.pk)
 
 
-class UpdateTask(View):
+class UpdateTask(CustomFormView):
 
     def dispatch(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
