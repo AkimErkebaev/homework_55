@@ -1,0 +1,11 @@
+1)	Task.objects.filter(status__name="Done", updated_at__date__gte=(datetime.now()-timedelta(days=30)))
+
+2)	Task.objects.filter((Q(status__name="Done") | Q(status__name="New")) & (Q(types__name="Bug") | Q(types__name="Enhancement"))).distinct()
+
+3)	Task.objects.filter(Q(name__iexact="bug") | Q(types__name="Bug")).exclude(status__name="Done").distinct()
+
+bonus:
+
+4)	сделал выводы которые только нужны
+
+5)	Task.objects.filter(name__contains=F("description"))

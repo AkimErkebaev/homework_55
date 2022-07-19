@@ -18,7 +18,7 @@ class Task(BaseModel):
     types = models.ManyToManyField("webapp.Type", related_name="tasks", blank=True)
 
     def __str__(self):
-        return f"{self.id}. {self.description}: {self.status} {self.name}"
+        return f"{self.id}. {self.name} {self.status} {self.types}"
 
     class Meta:
         db_table = "tasks"
