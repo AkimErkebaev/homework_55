@@ -2,6 +2,9 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
 
+from django.db.models import Q
+from django.utils.http import urlencode
+
 
 class ListView(TemplateView):
     model = None

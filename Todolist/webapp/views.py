@@ -26,7 +26,8 @@ class IndexView(ListView):
 
     def get_queryset(self):
         if self.search_value:
-            return Task.objects.filter(Q(author__icontains=self.search_value) | Q(title__icontains=self.search_value))
+            return Task.objects.filter(
+                Q(name__icontains=self.search_value))
         return Task.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):

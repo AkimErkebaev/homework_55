@@ -6,8 +6,9 @@
     </li>
 {% endblock %}
 {% block content %}
+    {% include "partial/search.html" %}
     <h1>Задания</h1>
-        <div class="row">
+    <div class="row">
         {% for task in tasks %}
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
@@ -20,5 +21,8 @@
                 </div>
             </div>
         {% endfor %}
+        {% if is_paginated %}
+            {% include "partial/pagination.html" %}
+        {% endif %}
     </div>
 {% endblock %}
