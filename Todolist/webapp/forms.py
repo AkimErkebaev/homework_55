@@ -25,3 +25,7 @@ class TaskForm(forms.ModelForm):
         if len(description) < 5:
             raise ValidationError("Название не должно быть  короче 5 символов")
         return description
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=50, required=False, label='Найти')
