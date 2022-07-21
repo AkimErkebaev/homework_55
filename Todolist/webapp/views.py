@@ -1,22 +1,49 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.urls import reverse
 # Create your views here.
+from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 
-from webapp.base_view import FormView as CustomFormView
-from webapp.forms import TaskForm
+from webapp.base_view import FormView as CustomFormView, ListView as CustomListView
+from webapp.forms import TaskForm, SearchForm
 from webapp.models import Task, Status, Type
 
 
-class IndexView(TemplateView):
+class IndexView(ListView):
+    model = Task
     template_name = "index.html"
+    context_object_name = "tasks"
+    ordering = "-updated_at"
+    paginate_by = 5
 
-    def get_context_data(self, **kwargs):
-        tasks = Task.objects.order_by("-updated_at")
-        kwargs["tasks"] = tasks
-        return super().get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        self.form = self.get_search_form()
+        self.search_value = self.get_search_value()
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.search_value:
+            return Task.objects.filter(Q(author__icontains=self.search_value) | Q(title__icontains=self.search_value))
+        return Task.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context["form"] = self.form
+        if self.search_value:
+            query = urlencode({'search': self.search_value})  # search=dcsdvsdvsd
+            context['query'] = query
+            context['search'] = self.search_value
+        return context
+
+    def get_search_form(self):
+        return SearchForm(self.request.GET)
+
+    def get_search_value(self):
+        if self.form.is_valid():
+            return self.form.cleaned_data.get("search")
 
 
 class TaskView(TemplateView):
