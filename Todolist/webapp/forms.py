@@ -8,7 +8,7 @@ from webapp.models import Status, Type, Task, Project
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ["name", "description", "status", "types"]
+        fields = ["name", "description", "status", "types", "project"]
         widgets = {
             "types": widgets.CheckboxSelectMultiple,
             "description": widgets.Textarea(attrs={"placeholder": "Введите описание"})

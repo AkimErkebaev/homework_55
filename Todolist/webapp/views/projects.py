@@ -49,6 +49,9 @@ class IndexViewProjects(ListView):
 class ProjectView(DetailView):
     template_name = "projects/project_view.html"
     model = Project
+    context_object_name = "projects"
+    ordering = "-updated_at"
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
