@@ -16,6 +16,8 @@ class Task(BaseModel):
     status = models.ForeignKey("webapp.Status", on_delete=models.PROTECT, related_name="statuses",
                                verbose_name='Статус')
     types = models.ManyToManyField("webapp.Type", related_name="tasks", blank=True)
+    project = models.ForeignKey("webapp.Project", on_delete=models.CASCADE, related_name="tasks",
+                               verbose_name='Проект')
 
     def __str__(self):
         return f"{self.id}. {self.name} {self.status} {self.types}"
@@ -48,3 +50,18 @@ class Type(models.Model):
         db_table = "types"
         verbose_name = "Тип"
         verbose_name_plural = "Типы"
+
+
+class Project(models.Model):
+    created_at = models.DateField(auto_now_add=False, verbose_name="Дата создания")
+    updated_at = models.DateField(auto_now=False, verbose_name="Дата изменения")
+    name = models.CharField(max_length=50, null=False, blank=False, default="NoName", verbose_name="Название")
+    description = models.TextField(max_length=3000, null=True, blank=True, verbose_name="Описание")
+
+    def __str__(self):
+        return f"{self.name}{self.description}"
+
+    class Meta:
+        db_table = "projects"
+        verbose_name = "Проект"
+        verbose_name_plural = "Проекты"
