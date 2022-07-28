@@ -1,13 +1,14 @@
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 # Create your views here.
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, FormView, ListView, ListView, DetailView, CreateView
+from django.views.generic import TemplateView, FormView, ListView, ListView, DetailView, CreateView, UpdateView, \
+    DeleteView
 
 from webapp.views.base_view import FormView as CustomFormView
-from webapp.forms import TaskForm, SearchForm, ProjectForm
+from webapp.forms import TaskForm, SearchForm, ProjectForm, ProjectDeleteForm
 from webapp.models import Task, Project
 
 
@@ -68,3 +69,23 @@ class CreateProject(CreateView):
         project.save()
         form.save_m2m()
         return redirect("project_view", pk=project.pk)
+
+
+class UpdateProject(UpdateView):
+    form_class = ProjectForm
+    template_name = "projects/update.html"
+    model = Project
+
+
+class DeleteProject(DeleteView):
+    model = Project
+    template_name = "projects/delete.html"
+    success_url = reverse_lazy('index_project')
+    form_class = ProjectDeleteForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(data=request.POST, instance=self.get_object())
+        if form.is_valid():
+            return self.delete(request, *args, **kwargs)
+        else:
+            return self.get(request, *args, **kwargs)

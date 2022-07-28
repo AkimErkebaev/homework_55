@@ -7,9 +7,7 @@
         <a class="nav-link" href="{% url "update_task" task.pk %}">Редактировать</a>
     </li>
     <li class="nav-item">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskDeleteModal">
-            Удалить
-        </button>
+        <a class="nav-link" href="{% url "delete_task" task.pk %}">Удалить</a>
     </li>
 {% endblock %}
 

@@ -3,25 +3,31 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url "create_task" %}">Создание задачи</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "update_project" projects.pk %}">Редактировать</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "delete_project" projects.pk %}">Удалить</a>
+    </li>
 {% endblock %}
 
 {% block content %}
 
     <p>
-        {{ project.name }}
+        {{ projects.name }}
     </p>
     <p>
-        {{ project.description }}
+        {{ projects.description }}
     </p>
     <p>
-        {{ task.created_at }}
+        {{ projects.created_at }}
     </p>
     <p>
-        {{ type.updated_at }}
+        {{ projects.updated_at }}
     </p>
     <h3>Задачи</h3>
-{#    {% for project in projects %}#}
-{#        <p>{{ project.name }}</p>#}
+    {#    {% for project in projects %}#}
+    {#        <p>{{ project.name }}</p>#}
     <div class="row">
         {% for task in tasks %}
             <div class="col-12 col-md-6 col-lg-4">
@@ -40,4 +46,25 @@
         {% endif %}
     </div>
     <a href="{% url "index_project" %}">На главную</a>
+    <div class="modal fade" id="projectDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskDeleteModal">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены что хотите удалить проект? {{ projects.name }}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form action="{% url "delete_project" projects.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Да</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

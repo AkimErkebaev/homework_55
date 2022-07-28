@@ -1,7 +1,9 @@
 from django.db import models
 
-
 # Create your models here.
+from django.urls import reverse
+
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
@@ -17,10 +19,13 @@ class Task(BaseModel):
                                verbose_name='Статус')
     types = models.ManyToManyField("webapp.Type", related_name="tasks", blank=True)
     project = models.ForeignKey("webapp.Project", on_delete=models.CASCADE, related_name="tasks",
-                               verbose_name='Проект')
+                                verbose_name='Проект')
 
     def __str__(self):
         return f"{self.id}. {self.name} {self.status} {self.types}"
+
+    def get_absolute_url(self):
+        return reverse("task_view", kwargs={"pk": self.pk})
 
     class Meta:
         db_table = "tasks"
@@ -60,6 +65,9 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.name}{self.description}"
+
+    def get_absolute_url(self):
+        return reverse("project_view", kwargs={"pk": self.pk})
 
     class Meta:
         db_table = "projects"

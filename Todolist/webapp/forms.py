@@ -30,7 +30,7 @@ class TaskForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ["name", "description"]
+        fields = ["name", "description", "created_at", "updated_at"]
         widgets = {
             "types": widgets.CheckboxSelectMultiple,
             "description": widgets.Textarea(attrs={"placeholder": "Введите описание"})
@@ -47,6 +47,30 @@ class ProjectForm(forms.ModelForm):
         if len(description) < 5:
             raise ValidationError("Название не должно быть  короче 5 символов")
         return description
+
+
+class TaskDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ["name"]
+
+    def clean_title(self):
+        name = self.cleaned_data.get("name")
+        if self.instance.name != name:
+            raise ValidationError("Названия не совпадают")
+        return name
+
+
+class ProjectDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ["name"]
+
+    def clean_title(self):
+        name = self.cleaned_data.get("name")
+        if self.instance.name != name:
+            raise ValidationError("Названия не совпадают")
+        return name
 
 
 class SearchForm(forms.Form):

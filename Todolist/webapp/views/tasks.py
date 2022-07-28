@@ -1,13 +1,13 @@
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 # Create your views here.
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, UpdateView, DeleteView
 
 from webapp.views.base_view import FormView as CustomFormView
-from webapp.forms import TaskForm, SearchForm
+from webapp.forms import TaskForm, SearchForm, TaskDeleteForm
 from webapp.models import Task, Project
 
 
@@ -75,41 +75,41 @@ class CreateTask(CustomFormView):
         return redirect("task_view", pk=self.task.pk)
 
 
-class UpdateTask(FormView):
+class UpdateTask(UpdateView):
     form_class = TaskForm
     template_name = "tasks/update.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.task = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_success_url(self):
-        return reverse("task_view", kwargs={"pk": self.task.pk})
-
-    def get_form_kwargs(self):
-        form_kwargs = super().get_form_kwargs()
-        form_kwargs['instance'] = self.task
-        return form_kwargs
-
-    def form_valid(self, form):
-        self.task = form.save()
-        return super().form_valid(form)
-
-    def get_object(self):
-        return get_object_or_404(Task, pk=self.kwargs.get("pk"))
+    model = Task
 
 
-class DeleteTask(View):
+    # def dispatch(self, request, *args, **kwargs):
+    #     self.task = self.get_object()
+    #     return super().dispatch(request, *args, **kwargs)
+    #
+    # def get_success_url(self):
+    #     return reverse("task_view", kwargs={"pk": self.task.pk})
+    #
+    # def get_form_kwargs(self):
+    #     form_kwargs = super().get_form_kwargs()
+    #     form_kwargs['instance'] = self.task
+    #     return form_kwargs
+    #
+    # def form_valid(self, form):
+    #     self.task = form.save()
+    #     return super().form_valid(form)
+    #
+    # def get_object(self):
+    #     return get_object_or_404(Task, pk=self.kwargs.get("pk"))
 
-    def dispatch(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        self.task = get_object_or_404(Task, pk=pk)
-        return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        if request.method == "GET":
-            pass
+class DeleteTask(DeleteView):
+    model = Task
+    template_name = "tasks/delete.html"
+    success_url = reverse_lazy('index')
+    form_class = TaskDeleteForm
 
     def post(self, request, *args, **kwargs):
-        self.task.delete()
-        return redirect("index")
+        form = self.form_class(data=request.POST, instance=self.get_object())
+        if form.is_valid():
+            return self.delete(request, *args, **kwargs)
+        else:
+            return self.get(request, *args, **kwargs)
