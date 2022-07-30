@@ -82,10 +82,3 @@ class DeleteProject(DeleteView):
     template_name = "projects/delete.html"
     success_url = reverse_lazy('index_project')
     form_class = ProjectDeleteForm
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(data=request.POST, instance=self.get_object())
-        if form.is_valid():
-            return self.delete(request, *args, **kwargs)
-        else:
-            return self.get(request, *args, **kwargs)
