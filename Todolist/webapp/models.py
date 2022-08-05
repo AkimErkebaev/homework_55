@@ -25,7 +25,7 @@ class Task(BaseModel):
         return f"{self.id}. {self.name} {self.status} {self.types}"
 
     def get_absolute_url(self):
-        return reverse("task_view", kwargs={"pk": self.pk})
+        return reverse("webapp:task_view", kwargs={"pk": self.pk})
 
     class Meta:
         db_table = "tasks"
@@ -67,7 +67,7 @@ class Project(models.Model):
         return f"{self.name}{self.description}"
 
     def get_absolute_url(self):
-        return reverse("project_view", kwargs={"pk": self.pk})
+        return reverse("webapp:project_view", kwargs={"pk": self.pk})
 
     class Meta:
         db_table = "projects"

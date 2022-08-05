@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -60,7 +61,7 @@ class ProjectView(DetailView):
         return context
 
 
-class CreateProject(CreateView):
+class CreateProject(LoginRequiredMixin, CreateView):
     form_class = ProjectForm
     template_name = "projects/create.html"
 
@@ -68,17 +69,17 @@ class CreateProject(CreateView):
         project = form.save(commit=False)
         project.save()
         form.save_m2m()
-        return redirect("project_view", pk=project.pk)
+        return redirect("webapp:project_view", pk=project.pk)
 
 
-class UpdateProject(UpdateView):
+class UpdateProject(LoginRequiredMixin, UpdateView):
     form_class = ProjectForm
     template_name = "projects/update.html"
     model = Project
 
 
-class DeleteProject(DeleteView):
+class DeleteProject(LoginRequiredMixin, DeleteView):
     model = Project
     template_name = "projects/delete.html"
-    success_url = reverse_lazy('index_project')
+    success_url = reverse_lazy('webapp:index_project')
     form_class = ProjectDeleteForm

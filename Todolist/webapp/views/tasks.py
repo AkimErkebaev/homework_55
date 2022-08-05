@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -60,7 +61,7 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CreateTask(CustomFormView):
+class CreateTask(LoginRequiredMixin, CustomFormView):
     form_class = TaskForm
     template_name = "tasks/create.html"
 
@@ -72,10 +73,10 @@ class CreateTask(CustomFormView):
         return super().form_valid(form)
 
     def get_redirect_url(self):
-        return redirect("task_view", pk=self.task.pk)
+        return redirect("webapp:task_view", pk=self.task.pk)
 
 
-class UpdateTask(UpdateView):
+class UpdateTask(LoginRequiredMixin, UpdateView):
     form_class = TaskForm
     template_name = "tasks/update.html"
     model = Task
@@ -101,10 +102,10 @@ class UpdateTask(UpdateView):
     #     return get_object_or_404(Task, pk=self.kwargs.get("pk"))
 
 
-class DeleteTask(DeleteView):
+class DeleteTask(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = "tasks/delete.html"
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('webapp:index')
     form_class = TaskDeleteForm
 
     def post(self, request, *args, **kwargs):
