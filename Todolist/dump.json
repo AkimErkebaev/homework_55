@@ -106,6 +106,22 @@
     }
 },
 {
+    "model": "webapp.task",
+    "pk": 16,
+    "fields": {
+        "created_at": "2022-08-09T01:06:33.268Z",
+        "updated_at": "2022-08-09T01:06:33.268Z",
+        "name": "NoName",
+        "description": "fdsafdsafsadf",
+        "status": 3,
+        "project": 4,
+        "types": [
+            2,
+            3
+        ]
+    }
+},
+{
     "model": "webapp.status",
     "pk": 1,
     "fields": {
