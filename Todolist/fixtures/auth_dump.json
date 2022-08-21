@@ -1,0 +1,226 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Менеджер",
+    "permissions": [
+      [
+        "add_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "add_users_in_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "change_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "delete_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "view_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "add_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "change_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "delete_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "view_task",
+        "webapp",
+        "task"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Капитан",
+    "permissions": [
+      [
+        "add_users_in_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "view_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "add_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "change_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "delete_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "view_task",
+        "webapp",
+        "task"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 3,
+  "fields": {
+    "name": "Разработчик",
+    "permissions": [
+      [
+        "view_project",
+        "webapp",
+        "project"
+      ],
+      [
+        "add_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "change_task",
+        "webapp",
+        "task"
+      ],
+      [
+        "view_task",
+        "webapp",
+        "task"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$320000$XTFlT15xqtZrVJNZF6IADQ$7qmMlbMnijMAlXS/z4j96mGYgjaprvCz2o3A2ln+cgU=",
+    "last_login": "2022-08-21T14:12:24.536Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-07-28T18:01:10.734Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$320000$STBs1pSJpk7egyxfrRIKen$8Wuxe++Ebh+xx6LSzoQ3baiCxm5tzgqj+aUg5P5XoBI=",
+    "last_login": "2022-08-21T12:48:41.929Z",
+    "is_superuser": false,
+    "username": "123",
+    "first_name": "123",
+    "last_name": "123",
+    "email": "akimmmm@bk.ru",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-08-21T12:48:41.828Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$320000$zQbWPpTtxlelZNVlxyYIQc$LGm4iXJghQ1KbNSzOCqviNeT8glORUd9KMMoKGRagdQ=",
+    "last_login": "2022-08-21T18:41:57.543Z",
+    "is_superuser": false,
+    "username": "manager",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-08-21T13:31:10Z",
+    "groups": [
+      [
+        "Менеджер"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$320000$1KdkvMXpVR70nNwHlqrJjz$zpf97uylqAttiW5UGTe8gTqzgQ1o7FH3mGTRcaypd2c=",
+    "last_login": "2022-08-21T18:42:22.374Z",
+    "is_superuser": false,
+    "username": "dev",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-08-21T13:32:02Z",
+    "groups": [
+      [
+        "Разработчик"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$320000$BCqEFRcF0fHrEJab8WPpEu$4q/zuVPxA1ES3iXjAraXH67syLJ2Xz/VrmeQSnfou20=",
+    "last_login": "2022-08-21T18:26:00.818Z",
+    "is_superuser": false,
+    "username": "lead",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-08-21T13:33:36Z",
+    "groups": [
+      [
+        "Капитан"
+      ]
+    ],
+    "user_permissions": []
+  }
+}
+]
