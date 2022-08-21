@@ -3,7 +3,7 @@
   "model": "auth.group",
   "pk": 1,
   "fields": {
-    "name": "Менеджер",
+    "name": "РњРµРЅРµРґР¶РµСЂ",
     "permissions": [
       [
         "add_project",
@@ -57,7 +57,7 @@
   "model": "auth.group",
   "pk": 2,
   "fields": {
-    "name": "Капитан",
+    "name": "РљР°РїРёС‚Р°РЅ",
     "permissions": [
       [
         "add_users_in_project",
@@ -96,7 +96,7 @@
   "model": "auth.group",
   "pk": 3,
   "fields": {
-    "name": "Разработчик",
+    "name": "Р Р°Р·СЂР°Р±РѕС‚С‡РёРє",
     "permissions": [
       [
         "view_project",
@@ -173,7 +173,7 @@
     "date_joined": "2022-08-21T13:31:10Z",
     "groups": [
       [
-        "Менеджер"
+        "РњРµРЅРµРґР¶РµСЂ"
       ]
     ],
     "user_permissions": []
@@ -195,7 +195,7 @@
     "date_joined": "2022-08-21T13:32:02Z",
     "groups": [
       [
-        "Разработчик"
+        "Р Р°Р·СЂР°Р±РѕС‚С‡РёРє"
       ]
     ],
     "user_permissions": []
@@ -217,7 +217,7 @@
     "date_joined": "2022-08-21T13:33:36Z",
     "groups": [
       [
-        "Капитан"
+        "РљР°РїРёС‚Р°РЅ"
       ]
     ],
     "user_permissions": []
