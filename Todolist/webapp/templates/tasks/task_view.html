@@ -7,9 +7,11 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url "webapp:update_task" task.pk %}">Редактировать</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url "webapp:delete_task" task.pk %}">Удалить</a>
-        </li>
+        {% if perms.webapp.delete_task %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "webapp:delete_task" task.pk %}">Удалить</a>
+            </li>
+        {% endif %}
     {% endif %}
 {% endblock %}
 

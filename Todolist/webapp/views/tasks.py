@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -18,6 +18,7 @@ class IndexView(ListView):
     context_object_name = "tasks"
     ordering = "-updated_at"
     paginate_by = 5
+    permission_required = "webapp.view_task"
 
     def get(self, request, *args, **kwargs):
         self.form = self.get_search_form()
@@ -47,8 +48,14 @@ class IndexView(ListView):
             return self.form.cleaned_data.get("search")
 
 
-class TaskView(TemplateView):
+class TaskView(PermissionRequiredMixin, TemplateView):
+    model = Task
     template_name = "tasks/task_view.html"
+    permission_required = "webapp.view_task"
+    context_object_name = "tasks"
+
+    def has_permission(self):
+        return super().has_permission()
 
     # extra_context = {"test": "test"}
     # def get_template_names(self):
@@ -61,9 +68,13 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CreateTask(LoginRequiredMixin, CustomFormView):
+class CreateTask(PermissionRequiredMixin, CustomFormView):
     form_class = TaskForm
     template_name = "tasks/create.html"
+    permission_required = "webapp.change_task"
+
+    def has_permission(self):
+        return super().has_permission()
 
     def form_valid(self, form):
         # tags = form.cleaned_data.pop("tags")
@@ -76,11 +87,14 @@ class CreateTask(LoginRequiredMixin, CustomFormView):
         return redirect("webapp:task_view", pk=self.task.pk)
 
 
-class UpdateTask(LoginRequiredMixin, UpdateView):
+class UpdateTask(PermissionRequiredMixin, UpdateView):
     form_class = TaskForm
     template_name = "tasks/update.html"
     model = Task
+    permission_required = "webapp.change_task"
 
+    def has_permission(self):
+        return super().has_permission() and self.request.user in self.get_object().project.users.all()
 
     # def dispatch(self, request, *args, **kwargs):
     #     self.task = self.get_object()
@@ -102,11 +116,15 @@ class UpdateTask(LoginRequiredMixin, UpdateView):
     #     return get_object_or_404(Task, pk=self.kwargs.get("pk"))
 
 
-class DeleteTask(LoginRequiredMixin, DeleteView):
+class DeleteTask(PermissionRequiredMixin, DeleteView):
     model = Task
     template_name = "tasks/delete.html"
     success_url = reverse_lazy('webapp:index')
     form_class = TaskDeleteForm
+    permission_required = "webapp.delete_task"
+
+    def has_permission(self):
+        return super().has_permission() and self.request.user in self.get_object().project.users.all()
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(data=request.POST, instance=self.get_object())

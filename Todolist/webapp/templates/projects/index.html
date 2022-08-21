@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% block nav %}
-    {% if request.user.is_authenticated %}
+    {% if perms.webapp.add_project %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url "webapp:create_project" %}">Создание задания</a>
+            <a class="nav-link" href="{% url "webapp:create_project" %}">Создание проекта</a>
         </li>
     {% endif %}
+    {#        {% if request.user.is_authenticated %}#}
+    {#            <li class="nav-item">#}
+    {#                <a class="nav-link" href="{% url "webapp:create_project" %}">Создание задания</a>#}
+    {#            </li>#}
+    {#        {% endif %}#}
     <li class="nav-item">
         <a class="nav-link" href="{% url "webapp:index" %}">Все задания</a>
     </li>
@@ -21,8 +26,18 @@
                         <h3>{{ project.name }}</h3>
                         <h3>{{ project.description }}</h3>
                         <h5 class="card-title">{{ project.title }}</h5>
-                        <a href="{% url "webapp:project_view" project.pk %}" class="card-link">Подробнее</a>
+
                     </div>
+                    {% if perms.webapp.view_project and user in project.users.all or perms.webapp.change_project %}
+                        <a class="nav-link" href="{% url "webapp:project_view" project.pk %}">Подробнее</a>
+                    {% endif %}
+                    {% if perms.webapp.add_users_in_project and user in project.users.all %}
+                        <a class="nav-link" href="{% url "webapp:change_users_in_project" project.pk %}">Редактировать
+                            состав</a>
+                    {% endif %}
+                    {% for u in project.users.all %}
+                        <span>{{ u.username }},</span>
+                    {% endfor %}
                 </div>
             </div>
         {% endfor %}

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 # Create your models here.
@@ -62,6 +63,7 @@ class Project(models.Model):
     updated_at = models.DateField(auto_now=False, verbose_name="Дата изменения")
     name = models.CharField(max_length=50, null=False, blank=False, default="NoName", verbose_name="Название")
     description = models.TextField(max_length=3000, null=True, blank=True, verbose_name="Описание")
+    users = models.ManyToManyField(get_user_model(), related_name="projects", blank=True)
 
     def __str__(self):
         return f"{self.name}{self.description}"
@@ -73,3 +75,6 @@ class Project(models.Model):
         db_table = "projects"
         verbose_name = "Проект"
         verbose_name_plural = "Проекты"
+        permissions = [
+            ('add_users_in_project', 'Добавить юзеров в проект')
+        ]

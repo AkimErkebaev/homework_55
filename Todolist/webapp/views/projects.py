@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -9,7 +9,7 @@ from django.views.generic import TemplateView, FormView, ListView, ListView, Det
     DeleteView
 
 from webapp.views.base_view import FormView as CustomFormView
-from webapp.forms import TaskForm, SearchForm, ProjectForm, ProjectDeleteForm
+from webapp.forms import TaskForm, SearchForm, ProjectForm, ProjectDeleteForm, ChangeUsersInProjectForm
 from webapp.models import Task, Project
 
 
@@ -48,8 +48,9 @@ class IndexViewProjects(ListView):
             return self.form.cleaned_data.get("search")
 
 
-class ProjectView(DetailView):
+class ProjectView(PermissionRequiredMixin, DetailView):
     template_name = "projects/project_view.html"
+    permission_required = "webapp.view_project"
     model = Project
     context_object_name = "projects"
     ordering = "-updated_at"
@@ -60,26 +61,61 @@ class ProjectView(DetailView):
         context['tasks'] = self.object.tasks.order_by("-created_at")
         return context
 
+    def has_permission(self):
+        return super().has_permission() and self.request.user in self.get_object().users.all() or self.request.user.groups.filter(
+            name__in=("Менеджер",)).exists()
 
-class CreateProject(LoginRequiredMixin, CreateView):
+
+class CreateProject(PermissionRequiredMixin, CreateView):
     form_class = ProjectForm
     template_name = "projects/create.html"
+    permission_required = "webapp.add_project"
 
     def form_valid(self, form):
-        project = form.save(commit=False)
-        project.save()
-        form.save_m2m()
-        return redirect("webapp:project_view", pk=project.pk)
+        response = super().form_valid(form)
+        self.object.users.add(self.request.user)
+        return response
+
+    def has_permission(self):
+        return self.request.user.has_perm("webapp.change_project")
+
+    # def form_valid(self, form):
+    #     project = form.save(commit=False)
+    #     project.save()
+    #     form.save_m2m()
+    #     return redirect("webapp:project_view", pk=project.pk)
 
 
-class UpdateProject(LoginRequiredMixin, UpdateView):
+class UpdateProject(PermissionRequiredMixin, UpdateView):
     form_class = ProjectForm
     template_name = "projects/update.html"
     model = Project
+    permission_required = "webapp.change_project"
 
 
-class DeleteProject(LoginRequiredMixin, DeleteView):
+class DeleteProject(PermissionRequiredMixin, DeleteView):
     model = Project
     template_name = "projects/delete.html"
     success_url = reverse_lazy('webapp:index_project')
     form_class = ProjectDeleteForm
+    permission_required = "webapp.delete_project"
+
+
+class ChangeUsersInProjectView(PermissionRequiredMixin, UpdateView):
+    model = Project
+    template_name = "projects/change_users.html"
+    permission_required = "webapp.add_users_in_project"
+    form_class = ChangeUsersInProjectForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["pk"] = self.request.user.pk
+        return kwargs
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.object.users.add(self.request.user)
+        return response
+
+    def has_permission(self):
+        return super().has_permission() and self.request.user in self.get_object().users.all()

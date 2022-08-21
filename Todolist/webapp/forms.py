@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import widgets
 
@@ -75,3 +76,16 @@ class ProjectDeleteForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search = forms.CharField(max_length=50, required=False, label='Найти')
+
+
+class ChangeUsersInProjectForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        pk = kwargs.pop("pk")
+        super().__init__(*args, **kwargs)
+        self.fields['users'].queryset = get_user_model().objects.exclude(pk=pk)
+
+    class Meta:
+        model = Project
+        fields = ("users",)
+        widgets = {"users": widgets.CheckboxSelectMultiple}
