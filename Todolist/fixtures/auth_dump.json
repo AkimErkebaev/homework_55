@@ -3,7 +3,7 @@
   "model": "auth.group",
   "pk": 1,
   "fields": {
-    "name": "РњРµРЅРµРґР¶РµСЂ",
+    "name": "Менеджер",
     "permissions": [
       [
         "add_project",
@@ -57,7 +57,7 @@
   "model": "auth.group",
   "pk": 2,
   "fields": {
-    "name": "РљР°РїРёС‚Р°РЅ",
+    "name": "Капитан",
     "permissions": [
       [
         "add_users_in_project",
@@ -96,7 +96,7 @@
   "model": "auth.group",
   "pk": 3,
   "fields": {
-    "name": "Р Р°Р·СЂР°Р±РѕС‚С‡РёРє",
+    "name": "Разработчик",
     "permissions": [
       [
         "view_project",
@@ -126,7 +126,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$320000$XTFlT15xqtZrVJNZF6IADQ$7qmMlbMnijMAlXS/z4j96mGYgjaprvCz2o3A2ln+cgU=",
-    "last_login": "2022-08-21T14:12:24.536Z",
+    "last_login": "2022-08-21T23:18:47.291Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -162,7 +162,7 @@
   "pk": 11,
   "fields": {
     "password": "pbkdf2_sha256$320000$zQbWPpTtxlelZNVlxyYIQc$LGm4iXJghQ1KbNSzOCqviNeT8glORUd9KMMoKGRagdQ=",
-    "last_login": "2022-08-21T18:41:57.543Z",
+    "last_login": "2022-08-21T23:41:27.348Z",
     "is_superuser": false,
     "username": "manager",
     "first_name": "",
@@ -173,7 +173,7 @@
     "date_joined": "2022-08-21T13:31:10Z",
     "groups": [
       [
-        "РњРµРЅРµРґР¶РµСЂ"
+        "Менеджер"
       ]
     ],
     "user_permissions": []
@@ -195,7 +195,7 @@
     "date_joined": "2022-08-21T13:32:02Z",
     "groups": [
       [
-        "Р Р°Р·СЂР°Р±РѕС‚С‡РёРє"
+        "Разработчик"
       ]
     ],
     "user_permissions": []
@@ -206,7 +206,7 @@
   "pk": 14,
   "fields": {
     "password": "pbkdf2_sha256$320000$BCqEFRcF0fHrEJab8WPpEu$4q/zuVPxA1ES3iXjAraXH67syLJ2Xz/VrmeQSnfou20=",
-    "last_login": "2022-08-21T18:26:00.818Z",
+    "last_login": "2022-08-21T22:48:49.791Z",
     "is_superuser": false,
     "username": "lead",
     "first_name": "",
@@ -217,7 +217,7 @@
     "date_joined": "2022-08-21T13:33:36Z",
     "groups": [
       [
-        "РљР°РїРёС‚Р°РЅ"
+        "Капитан"
       ]
     ],
     "user_permissions": []
