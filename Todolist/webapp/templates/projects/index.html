@@ -17,32 +17,5 @@
 {% endblock %}
 {% block content %}
     {% include "partial/search.html" %}
-    <h1>Проекты</h1>
-    <div class="row">
-        {% for project in projects %}
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>{{ project.name }}</h3>
-                        <h3>{{ project.description }}</h3>
-                        <h5 class="card-title">{{ project.title }}</h5>
-
-                    </div>
-                    {% if perms.webapp.view_project and user in project.users.all or perms.webapp.change_project %}
-                        <a class="nav-link" href="{% url "webapp:project_view" project.pk %}">Подробнее</a>
-                    {% endif %}
-                    {% if perms.webapp.add_users_in_project and user in project.users.all %}
-                        <a class="nav-link" href="{% url "webapp:change_users_in_project" project.pk %}">Редактировать
-                            состав</a>
-                    {% endif %}
-                    {% for u in project.users.all %}
-                        <span>{{ u.username }},</span>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
-        {% if is_paginated %}
-            {% include "partial/pagination.html" %}
-        {% endif %}
-    </div>
+    {% include "partial/articles_list_partial.html" %}
 {% endblock %}

@@ -62,8 +62,8 @@ class ProjectView(PermissionRequiredMixin, DetailView):
         return context
 
     def has_permission(self):
-        return super().has_permission() and self.request.user in self.get_object().users.all() or self.request.user.groups.filter(
-            name__in=("Менеджер",)).exists()
+        return super().has_permission() and self.request.user in self.get_object().users.all() or \
+               super().has_permission() and self.request.user.groups.filter(name__in=("Менеджер",)).exists()
 
 
 class CreateProject(PermissionRequiredMixin, CreateView):
